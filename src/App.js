@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import MainLayout from './Layouts/MainLayout.jsx'
+import HomePage from './Pages/HomePage.jsx'
+import Products from './Components/Products/Products.jsx'
+import ProductDetails from './Components/ProductDetails/ProductDetails.jsx'
+import Registeration from './Components/Registeration/Registeration.jsx'
+import Login from './Components/Login/Login.jsx'
+import { ToastContainer } from 'react-toastify';
+import CartContextProvider from './Context/CartContext.js'
+import Cart from './Components/Cart/Cart.jsx'
+import Checkout from './Components/Checkout/Checkout.jsx'
 
-function App() {
+export default function App() {
+
+  let routes = createBrowserRouter([{
+    path: '',
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "products", element: <Products /> },
+      { path: "product-details/:id", element: <ProductDetails /> },
+      { path: "register", element: <Registeration /> },
+      { path: "login", element: <Login /> },
+      { path: "cart", element: <Cart /> },
+      { path: "checkout", element: <Checkout /> }
+
+    ]
+  }])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>
+      <ToastContainer theme='colored' />
 
-export default App;
+      <CartContextProvider>
+        <RouterProvider router={routes} />
+      </CartContextProvider>
+
+    </>
+  )
+}
